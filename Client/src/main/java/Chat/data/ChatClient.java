@@ -1,4 +1,4 @@
-
+package Chat.data;
 
 import java.util.Scanner;
 
@@ -14,16 +14,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-public class ChatClient {
+public class ChatClient extends Thread {
 
     static final String HOST = "127.0.0.1";
     static final int PORT = 8007;
-    static String clientName;
 
-    public static void main(String[] args) throws Exception {
 
+    public void run() {
         Scanner scanner = new Scanner(System.in);
-
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -43,15 +41,17 @@ public class ChatClient {
 
 
             ChannelFuture f = b.connect(HOST, PORT).sync();
-
+            while (scanner.hasNext()) {
                 String input = scanner.nextLine();
                 Channel channel = f.sync().channel();
                 channel.writeAndFlush(input);
                 channel.flush();
-
+            }
 
 
             f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
 
             group.shutdownGracefully();
