@@ -1,4 +1,4 @@
-package Chat.data;
+package Chat.service;
 
 import java.util.Scanner;
 
@@ -13,48 +13,50 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.springframework.stereotype.Service;
 
-public class ChatClient extends Thread {
+import javax.annotation.PostConstruct;
+
+@Service
+public class ChatClientService {
 
     static final String HOST = "127.0.0.1";
     static final int PORT = 8007;
+    static final Bootstrap bootstrap = new Bootstrap();
+    private ChannelFuture channelFuture;
 
-
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
+    @PostConstruct
+    public void init() throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
+            bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
+
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch) {
+
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new StringDecoder());
                             p.addLast(new StringEncoder());
-
                             p.addLast(new ClientHandler());
+
 
                         }
                     });
+            this.channelFuture =  bootstrap.connect(HOST, PORT).sync();
+        System.out.println("Channel look like: "+this.channelFuture.channel());
+        }
 
+    public void sent(String str) {
+        try {
+            Channel channel = channelFuture.sync().channel();
+            channel.writeAndFlush(str);
+            channel.flush();
+            channelFuture.channel().closeFuture().sync();
 
-            ChannelFuture f = b.connect(HOST, PORT).sync();
-            while (scanner.hasNext()) {
-                String input = scanner.nextLine();
-                Channel channel = f.sync().channel();
-                channel.writeAndFlush(input);
-                channel.flush();
-            }
-
-
-            f.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
+        }catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-
-            group.shutdownGracefully();
         }
     }
+
 }

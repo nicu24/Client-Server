@@ -1,23 +1,18 @@
 package Chat.controler;
 
 
-import Chat.data.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import Chat.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/data")
 public class ClientController {
-    private ChatClient chatClient;
+    @Autowired
+    private final ChatClientService chatClientService  = new ChatClientService();
 
-    @RequestMapping("/run")
-    private void runClient(){
-        if (chatClient == null)
-        {
-            this.chatClient = new ChatClient();
-            chatClient.start();
-        } else{
-            System.out.println("Chat client is already created");
-        }
+    @RequestMapping("/sent")
+    private void sent(@RequestParam(name = "str") String str){
+      chatClientService.sent(str);
     }
 }
