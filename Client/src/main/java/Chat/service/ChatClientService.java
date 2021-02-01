@@ -1,7 +1,4 @@
 package Chat.service;
-
-import java.util.Scanner;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -26,26 +23,28 @@ public class ChatClientService {
     private ChannelFuture channelFuture;
 
     @PostConstruct
-    public void init() throws InterruptedException {
-        EventLoopGroup group = new NioEventLoopGroup();
+    public void init(){
+        try {
+            EventLoopGroup group = new NioEventLoopGroup();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
-                        public void initChannel(SocketChannel ch) {
+                        public void initChannel(SocketChannel ch){
 
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new StringDecoder());
                             p.addLast(new StringEncoder());
                             p.addLast(new ClientHandler());
-
-
                         }
                     });
-            this.channelFuture =  bootstrap.connect(HOST, PORT).sync();
-        System.out.println("Channel look like: "+this.channelFuture.channel());
+            this.channelFuture = bootstrap.connect(HOST, PORT).sync();
+            System.out.println("Channel look like: " + this.channelFuture.channel());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
 
     public void sent(String str) {
         try {
@@ -56,6 +55,7 @@ public class ChatClientService {
 
         }catch (InterruptedException e) {
             e.printStackTrace();
+
         }
     }
 
