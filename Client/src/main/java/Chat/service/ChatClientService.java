@@ -17,21 +17,31 @@ public class ChatClientService {
     }
 
 
-    public void sentMessage(String str){
-        if(verifyState()) {
+    public void sentMessage(String str) {
+        if (verifyState()) {
             this.chatClient.sent(str);
-        }else {
+        } else {
             System.out.println("State provide that channel is down");
             this.reconnectToServer();
         }
     }
 
-    public void reconnectToServer(){
-        this.chatClient.connect();
+    public void reconnectToServer() {
+
+        while (!this.chatClient.connect()) {
+            try {
+                this.chatClient.connect();
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
-    public boolean verifyState(){
-        System.out.println("Verify state: "+this.chatClient.state());
+    public boolean verifyState() {
+        System.out.println("Verify state: " + this.chatClient.state());
         return this.chatClient.state();
     }
 

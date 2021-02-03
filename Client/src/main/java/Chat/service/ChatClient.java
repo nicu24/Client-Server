@@ -44,29 +44,36 @@ public class ChatClient {
 
 
     public void sent(String str) {
-        try {
-            Channel channel = channelFuture.sync().channel();
-            channel.writeAndFlush(str);
-            channel.flush();
-            channelFuture.channel().closeFuture().sync();
 
-        }catch (InterruptedException e) {
-            e.printStackTrace();
+        if(this.state()) {
+            try {
+                Channel channel = channelFuture.sync().channel();
+                channel.writeAndFlush(str);
+                channel.flush();
+                channelFuture.channel().closeFuture().sync();
 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+            }
+        }else {
+            System.out.println("Message can not be sent: Chanal is offline neet reconect");
         }
     }
 
-    public void connect(){
+
+    public boolean connect(){
         System.out.println("Connect to server");
-        try{
-            this.channelFuture = bootstrap.connect(HOST, PORT).sync();
-            System.out.println("Channel look like: " + this.channelFuture.channel());
-            System.out.println(this.channelFuture.isVoid());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-    }
+        try {
+            this.channelFuture = bootstrap.connect(HOST, PORT).sync();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println("Server is unreachable");
+            return false;
+        }
+      }
 
     public boolean state(){
         return this.channelFuture.channel().isActive();
