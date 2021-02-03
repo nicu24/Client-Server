@@ -2,13 +2,9 @@ package Chat.service;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Component;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
-
-
+@Component
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
