@@ -18,12 +18,21 @@ public class ChatClientService {
 
 
     public void sentMessage(String str){
-
-        this.chatClient.sent(str);
+        if(verifyState()) {
+            this.chatClient.sent(str);
+        }else {
+            System.out.println("State provide that channel is down");
+            this.reconnectToServer();
+        }
     }
 
     public void reconnectToServer(){
+        this.chatClient.connect();
+    }
 
+    public boolean verifyState(){
+        System.out.println("Verify state: "+this.chatClient.state());
+        return this.chatClient.state();
     }
 
 }

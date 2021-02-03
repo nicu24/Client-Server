@@ -68,4 +68,8 @@ public class ChatClient {
 
     }
 
+    public boolean state(){
+        return this.channelFuture.channel().isActive();
+    }
+
 }
