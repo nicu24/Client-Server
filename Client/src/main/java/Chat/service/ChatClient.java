@@ -40,14 +40,13 @@ public class ChatClient {
                 });
     }
 
-    public boolean connect() {
+    public void connect() {
         System.out.println("Connect to server");
         try {
             this.channelFuture = bootstrap.connect(HOST, PORT).sync();
-            return true;
         } catch (Exception e) {
             System.out.println("Server is unreachable");
-            return false;
+            this.connect();
         }
     }
 

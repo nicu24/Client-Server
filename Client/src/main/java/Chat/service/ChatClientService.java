@@ -18,14 +18,7 @@ public class ChatClientService {
     }
 
     public void connectToServer() {
-        while (!this.chatClient.connect()) {
-            try {
-                this.chatClient.connect();
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.chatClient.connect();
     }
 
     public void sentMessage(String str) {
