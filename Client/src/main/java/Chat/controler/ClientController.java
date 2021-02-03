@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/data")
 public class ClientController {
+
     @Autowired
     private final ChatClientService chatClientService  = new ChatClientService();
 
     @RequestMapping("/sent")
     private void sent(@RequestParam(name = "str") String str){
-      chatClientService.sent(str);
+      chatClientService.sentMessage(str);
     }
 }
