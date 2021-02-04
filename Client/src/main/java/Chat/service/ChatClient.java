@@ -22,11 +22,9 @@ public class ChatClient {
     static final int PORT = 8007;
     static final Bootstrap bootstrap = new Bootstrap();
 
-    private final ClientHandler clientHandler;
     private ChannelFuture channelFuture;
 
-    @PostConstruct
-    public void init() {
+    public void init(SimpleChannelInboundHandler<String> handler) {
         EventLoopGroup group = new NioEventLoopGroup();
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
@@ -38,7 +36,7 @@ public class ChatClient {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast(new StringDecoder());
                         p.addLast(new StringEncoder());
-                        p.addLast(clientHandler);
+                        p.addLast(handler);
                     }
                 });
     }
