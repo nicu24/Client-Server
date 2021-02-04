@@ -14,38 +14,8 @@
     </modules>
 
     <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.49.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.puresoltechnologies.javafx</groupId>
-            <artifactId>services</artifactId>
-            <version>0.13.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>11.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>11.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx</artifactId>
-            <version> 11.0.2</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
 </project>

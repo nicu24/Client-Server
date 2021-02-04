@@ -18,7 +18,7 @@ public class ChatClientService {
     }
 
     public void connectToServer() {
-        this.chatClient.connect();
+                this.chatClient.connect();
     }
 
     public void sentMessage(String str) {

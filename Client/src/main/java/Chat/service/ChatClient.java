@@ -7,19 +7,22 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class ChatClient {
 
     static final String HOST = "127.0.0.1";
     static final int PORT = 8007;
     static final Bootstrap bootstrap = new Bootstrap();
-    @Autowired
-    ClientHandler clientHandler;
+
+    private final ClientHandler clientHandler;
     private ChannelFuture channelFuture;
 
     @PostConstruct
@@ -40,13 +43,15 @@ public class ChatClient {
                 });
     }
 
-    public void connect() {
-        System.out.println("Connect to server");
+    public boolean connect() {
+        log.info("Connect to server");
         try {
             this.channelFuture = bootstrap.connect(HOST, PORT).sync();
+            return true;
         } catch (Exception e) {
+            log.error("Server is unreachable", e);
             System.out.println("Server is unreachable");
-            this.connect();
+            return false;
         }
     }
 

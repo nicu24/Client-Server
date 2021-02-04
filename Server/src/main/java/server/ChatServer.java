@@ -10,14 +10,15 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class ChatServer {
 
 
     static final int PORT = 8007;
 
     public static void main(String[] args) throws Exception {
-
 
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -40,8 +41,7 @@ public final class ChatServer {
 
 
             ChannelFuture f = b.bind(PORT).sync();
-            System.out.println("Chat Server started. Ready to accept chat clients.");
-
+            log.info("Chat Server started. Ready to accept chat clients.");
 
             f.channel().closeFuture().sync();
         } finally {
