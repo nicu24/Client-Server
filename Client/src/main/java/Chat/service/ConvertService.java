@@ -11,7 +11,7 @@ public class ConvertService {
     private static final ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
     private static final ByteBuffer buffer2 = ByteBuffer.allocate(Long.BYTES);
 
-    public static byte[] longToBytes(long x, long y) {
+    public static long longToBytes(long x, long y) {
 
         byte[] xBytes;
         byte[] yBytes;
@@ -44,14 +44,17 @@ public class ConvertService {
         }
         buffer.clear();
         buffer2.clear();
-        return xor;
+
+        System.out.println("\n"+bytesToLong(xor));
+        return bytesToLong(xor);
 
     }
 
     public static long bytesToLong(byte[] bytes) {
-        buffer.put(bytes, 0, bytes.length);
-        buffer.flip();
-        return buffer.getLong();
+        ByteBuffer buffer3 = ByteBuffer.allocate(Long.BYTES);
+        buffer3.put(bytes, 0, bytes.length);
+        buffer3.flip();
+        return buffer3.getLong();
     }
 
 }
