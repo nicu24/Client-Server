@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 public class ChatClientServiceImpl extends SimpleChannelInboundHandler<String> implements  ChatClientService{
     private final ChatClient chatClient;
 
-    @EventListener
+    @PostConstruct
     private void init() {
         this.chatClient.init(this);
         this.chatClient.connect();
@@ -43,6 +43,7 @@ public class ChatClientServiceImpl extends SimpleChannelInboundHandler<String> i
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) {
+
         System.out.println("Message: " + msg);
     }
 

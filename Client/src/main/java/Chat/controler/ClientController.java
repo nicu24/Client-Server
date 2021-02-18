@@ -15,8 +15,6 @@ public class ClientController {
     private String sent(@RequestParam(name = "str") String str){
         chatClientService.sentMessage(str);
 
-
-
       return "200";
     }
 }
